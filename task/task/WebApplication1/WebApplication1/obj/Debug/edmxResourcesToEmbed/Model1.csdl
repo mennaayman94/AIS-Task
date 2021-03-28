@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Balance" Type="Double" />
+    <Property Name="ParentAccID" Type="Int32" />
+    <Property Name="TypeID" Type="Int32" />
+    <Property Name="CategoryID" Type="Int32" />
+    <NavigationProperty Name="AccountsCategory" Relationship="Self.FK__Accounts__Catego__398D8EEE" FromRole="Accounts" ToRole="AccountsCategories" />
+    <NavigationProperty Name="Accounts1" Relationship="Self.FK__Accounts__Parent__37A5467C" FromRole="Accounts" ToRole="Accounts1" />
+    <NavigationProperty Name="Account1" Relationship="Self.FK__Accounts__Parent__37A5467C" FromRole="Accounts1" ToRole="Accounts" />
+    <NavigationProperty Name="AccountsType" Relationship="Self.FK__Accounts__TypeID__38996AB5" FromRole="Accounts" ToRole="AccountsTypes" />
+  </EntityType>
+  <EntityType Name="AccountsCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Accounts" Relationship="Self.FK__Accounts__Catego__398D8EEE" FromRole="AccountsCategories" ToRole="Accounts" />
+  </EntityType>
+  <EntityType Name="AccountsLog">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EventType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TableName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="RecordID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ColumnName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OriginalValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="NewValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Created_date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="AccountsType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Accounts" Relationship="Self.FK__Accounts__TypeID__38996AB5" FromRole="AccountsTypes" ToRole="Accounts" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK__Accounts__Catego__398D8EEE">
+    <End Role="AccountsCategories" Type="Self.AccountsCategory" Multiplicity="0..1" />
+    <End Role="Accounts" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccountsCategories">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Accounts">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Accounts__Parent__37A5467C">
+    <End Role="Accounts" Type="Self.Account" Multiplicity="0..1" />
+    <End Role="Accounts1" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Accounts">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Accounts1">
+        <PropertyRef Name="ParentAccID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Accounts__TypeID__38996AB5">
+    <End Role="AccountsTypes" Type="Self.AccountsType" Multiplicity="0..1" />
+    <End Role="Accounts" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccountsTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Accounts">
+        <PropertyRef Name="TypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Accounts_DBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Accounts" EntityType="Self.Account" />
+    <EntitySet Name="AccountsCategories" EntityType="Self.AccountsCategory" />
+    <EntitySet Name="AccountsLogs" EntityType="Self.AccountsLog" />
+    <EntitySet Name="AccountsTypes" EntityType="Self.AccountsType" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK__Accounts__Catego__398D8EEE" Association="Self.FK__Accounts__Catego__398D8EEE">
+      <End Role="AccountsCategories" EntitySet="AccountsCategories" />
+      <End Role="Accounts" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Accounts__Parent__37A5467C" Association="Self.FK__Accounts__Parent__37A5467C">
+      <End Role="Accounts" EntitySet="Accounts" />
+      <End Role="Accounts1" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Accounts__TypeID__38996AB5" Association="Self.FK__Accounts__TypeID__38996AB5">
+      <End Role="AccountsTypes" EntitySet="AccountsTypes" />
+      <End Role="Accounts" EntitySet="Accounts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
